@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Display part of SSH private key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | head -c 20
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
