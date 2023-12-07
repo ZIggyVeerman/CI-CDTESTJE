@@ -67,7 +67,16 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Kill the existing Java process (if necessary)
-            pkill -f 'java -jar'
+            # Kill the existing Java process gracefully
+            pkill -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'
+            sleep 5  # Wait for the process to shut down
+            
+            # Check if process is still running and force kill if necessary
+            if pgrep -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'; then
+              pkill -9 -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'
+            fi
+            
             # Start the Java application
-            nohup java -jar /home/ubuntu/deployment/CI-CD-TESTJE-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
+            nohup java -jar /home/ubuntu/deployment/CI-CD-TESTJE-0.0.1-SNAPSHOT.jar > /home/ubuntu/deployment/app.log 2>&1 &
+            echo "Java application started."
+     
