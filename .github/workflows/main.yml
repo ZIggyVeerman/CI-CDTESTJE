@@ -85,6 +85,12 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Change to the directory where the JAR file is located
+            cd /home/ubuntu/
+
             # Start the Java application
-            nohup java -jar /home/ubuntu/CI-CD-TESTJE-0.0.1-SNAPSHOT.jar > /home/ubuntu/deployment/app.log 2>&1 &
-            echo "Java application start command executed."
+            nohup java -jar CI-CD-TESTJE-0.0.1-SNAPSHOT.jar > ~/app.log 2>&1 &
+
+            # Optional: Wait a few seconds and check if the process is running
+            sleep 10
+            pgrep -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar' && echo "Java application is running." || echo "Failed to start Java application."
