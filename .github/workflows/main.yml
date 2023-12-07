@@ -77,6 +77,5 @@ jobs:
             fi
             
             # Start the Java application
-            nohup java -jar /home/ubuntu/deployment/CI-CD-TESTJE-0.0.1-SNAPSHOT.jar > /home/ubuntu/deployment/app.log 2>&1 &
-            echo "Java application started."
-     
+            nohup java -jar /home/ubuntu/CI-CD-TESTJE-0.0.1-SNAPSHOT.jar > /home/ubuntu/deployment/app.log 2>&1 &
+            echo "Java application start command executed."
