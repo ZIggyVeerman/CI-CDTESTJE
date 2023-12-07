@@ -61,22 +61,22 @@ jobs:
         env:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
 
-      - name: Stop Existing Java Application
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            # Kill the existing Java process gracefully
-            pkill -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'
-            sleep 5  # Wait for the process to shut down
-            
-            # Check if process is still running and force kill if necessary
-            if pgrep -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'; then
-              pkill -9 -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'
-            fi
-            echo "Existing Java application process stopped."
+#      - name: Stop Existing Java Application
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.REMOTE_HOST }}
+#          username: ubuntu
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          script: |
+#            # Kill the existing Java process gracefully
+#            pkill -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'
+#            sleep 5  # Wait for the process to shut down
+#
+#            # Check if process is still running and force kill if necessary
+#            if pgrep -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'; then
+#              pkill -9 -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'
+#            fi
+#            echo "Existing Java application process stopped."
 
       - name: Start Java Application
         uses: appleboy/ssh-action@master
