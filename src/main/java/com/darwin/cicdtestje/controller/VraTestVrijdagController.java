@@ -19,14 +19,14 @@ public class VraTestVrijdagController {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<VraTestVrijdagDTO> findById(@PathVariable Long id) {
-        VraTestVrijdagDTO dto = service.findById(id);
-        if (dto != null) {
-            return ResponseEntity.ok(dto);
-        }
-        return ResponseEntity.notFound().build();
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<VraTestVrijdagDTO> findById(@PathVariable Long id) {
+//        VraTestVrijdagDTO dto = service.findById(id);
+//        if (dto != null) {
+//            return ResponseEntity.ok(dto);
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
 
     @PostMapping
     public ResponseEntity<VraTestVrijdagDTO> create(@RequestBody VraTestVrijdagDTO dto) {
