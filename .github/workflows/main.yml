@@ -64,7 +64,7 @@ jobs:
             -avz
             --rsh "ssh -p 22 -i /home/runner/.ssh/deploy_key -o StrictHostKeyChecking=no"
             deployment/
-            ubuntu@${{ secrets.REMOTE_HOST }}:/home/ubuntu/ 
+            ubuntu@${{ secrets.REMOTE_HOST }}:/home/ubuntu/
 
       - name: Restart server
         uses: appleboy/ssh-action@master
