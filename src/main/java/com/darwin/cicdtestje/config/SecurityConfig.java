@@ -1,4 +1,4 @@
-package config;
+package com.darwin.cicdtestje.config;
 
 //import com.darwin.backendjava.filter.JwtAuthenticationFilter;
 //import com.darwin.backendjava.filter.JwtAuthorizationFilter;
