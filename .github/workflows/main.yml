@@ -27,3 +27,28 @@ jobs:
 
     - name: Run tests
       run: ./gradlew test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # This ensures deployment happens after the build job
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Copy files to EC2
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Your PEM key
+          SOURCE: "."  # Or specify the directory to copy
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}  # EC2 public IP or DNS
+          REMOTE_USER: ec2-user  # Or the user you use to SSH
+          TARGET: /path/to/target/directory  # Path on EC2 where to copy files
+
+      - name: Restart server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /path/to/target/directory
+            # Commands to restart your Java server
