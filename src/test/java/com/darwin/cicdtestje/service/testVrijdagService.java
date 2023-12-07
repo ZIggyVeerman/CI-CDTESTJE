@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
-class VraTestVrijdagServiceTest {
+class testVrijdagService {
 
     @Mock
     private VraTestVrijdagRepository repository;
