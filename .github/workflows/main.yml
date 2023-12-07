@@ -58,8 +58,10 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SOURCE: "deployment/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ubuntu # Assuming you're using an Ubuntu instance
+          REMOTE_USER: ubuntu
           TARGET: /home/ubuntu/
+        with:
+          args: -o LogLevel=DEBUG
 
       - name: Restart server
         uses: appleboy/ssh-action@master
