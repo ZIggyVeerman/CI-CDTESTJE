@@ -28,4 +28,3 @@ jobs:
           ssh -i key.pem ubuntu@ec2-3-76-106-239.eu-central-1.compute.amazonaws.com
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-     
