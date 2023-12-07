@@ -31,46 +31,43 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: compiled-app
-          path: build/libs/*.jar # Adjust this to match the path and filename of your built JAR
+          path: build/libs/*.jar
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - uses: actions/checkout@v2
-
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: compiled-app
           path: deployment
 
-      # Set up SSH
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Add EC2 instance to known hosts
       - name: Add EC2 to known hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
 
-      # Deploy files to EC2 using rsync
       - name: Copy files to EC2
         run: |
           rsync -avz --rsh "ssh -p 22 -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" deployment/ ubuntu@${{ secrets.REMOTE_HOST }}:/home/ubuntu/
         env:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
 
-      # Restart server
-      - name: Restart server
+      - name: Restart Java Application
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo systemctl stop your-java-service # Replace with your specific stop command
-            sudo systemctl start your-java-service # Replace with your specific start command
+            # Kill the existing Java process (if necessary)
+            pkill -f 'java -jar'
+            # Start the Java application
+            nohup java -jar /home/ubuntu/deployment/CI-CD-TESTJE-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
