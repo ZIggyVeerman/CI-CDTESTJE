@@ -68,24 +68,21 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Show running Java processes before attempting to kill
-            echo "Running Java processes before kill:"
-            pgrep -fla java
+            # Identify the Java process specifically
+            PID=$(jps | grep 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar' | awk '{print $1}')
+            if [ -n "$PID" ]; then
+              echo "Stopping Java application with PID: $PID"
+              kill -TERM "$PID"
+              sleep 5  # Wait for the process to shut down
             
-            # Kill the existing Java process gracefully
-            pkill -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'
-            sleep 5  # Wait for the process to shut down
-            
-            # Check if process is still running and force kill if necessary
-            if pgrep -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'; then
-              pkill -9 -f 'CI-CD-TESTJE-0.0.1-SNAPSHOT.jar'
+              # Double check and force kill if necessary
+              if kill -0 "$PID" 2>/dev/null; then
+                echo "Force killing Java application."
+                kill -9 "$PID"
+              fi
+            else
+              echo "No Java application process found."
             fi
-            
-            # Show running Java processes after attempting to kill
-            echo "Running Java processes after kill:"
-            pgrep -fla java
-            
-            echo "Existing Java application process stopped."
 
       - name: Start Java Application
         uses: appleboy/ssh-action@master
