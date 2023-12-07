@@ -13,11 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Display part of SSH private key
-        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | head -c 20
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
@@ -26,9 +21,10 @@ jobs:
       - name: SSH into EC2
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ubuntu  # Update with your EC2 instance's username
-          port: 22  # Update with your SSH port if necessary
+          host: ec2-3-76-106-239.eu-central-1.compute.amazonaws.com
+          username: ubuntu  # Use the correct username for your EC2 instance
+          port: 22  # Use the correct SSH port if necessary
           script: |
-            # Run a simple command, e.g., echo
+            # Run your desired SSH command here
+            # For example, echoing a message:
             echo "Hello from GitHub Actions!"
