@@ -59,9 +59,12 @@ jobs:
           SOURCE: "deployment/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ubuntu
-          TARGET: /home/ubuntu/
         with:
-          args: -o LogLevel=DEBUG
+          args: >
+            -avz
+            --rsh "ssh -p 22 -i /home/runner/.ssh/deploy_key -o StrictHostKeyChecking=no"
+            deployment/
+            ubuntu@${{ secrets.REMOTE_HOST }}:/home/ubuntu/ 
 
       - name: Restart server
         uses: appleboy/ssh-action@master
