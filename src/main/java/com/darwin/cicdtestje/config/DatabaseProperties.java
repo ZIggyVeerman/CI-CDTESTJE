@@ -1,4 +1,4 @@
-package config;
+package com.darwin.cicdtestje.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
